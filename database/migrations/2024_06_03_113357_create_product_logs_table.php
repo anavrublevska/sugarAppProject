@@ -23,6 +23,7 @@ return new class extends Migration
             $table->float('fats')->nullable();
             $table->date('date');
             $table->time('hour');
+            $table->text('comment');
             $table->boolean('successful');
             $table->unsignedInteger('created_by');
             $table->timestamps();

@@ -9,7 +9,7 @@ class ProductLog extends BaseModel
 {
     use CreatorTrait;
 
-    protected $fillable = ['grams', 'carbohydrates', 'proteins', 'fats', 'date', 'hour', 'successful'];
+    protected $fillable = ['grams', 'carbohydrates', 'proteins', 'fats', 'date', 'hour', 'successful', 'comment'];
 
     protected $casts = ['grams' => 'integer', 'carbohydrates' => 'float', 'proteins' => 'float', 'fats' => 'float', 'date' => 'date', 'hour' => 'timestamp', 'successful' => 'boolean'];
 
