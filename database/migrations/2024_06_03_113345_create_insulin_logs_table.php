@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedInteger('insulin_id');
             $table->float('quantity');
             $table->date('date');
-            $table->time('hour');
+            $table->time('hour')->nullable();
             $table->unsignedInteger('created_by');
             $table->timestamps();
 

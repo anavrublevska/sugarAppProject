@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product_logs', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('product_id');
-            $table->unsignedInteger('insulin_id');
+            $table->unsignedInteger('insulin_log_id');
             $table->unsignedInteger('sugar_before_id');
             $table->unsignedInteger('sugar_after_id');
             $table->unsignedInteger('grams');
@@ -22,9 +22,9 @@ return new class extends Migration
             $table->float('proteins')->nullable();
             $table->float('fats')->nullable();
             $table->date('date');
-            $table->time('hour');
-            $table->text('comment');
-            $table->boolean('successful');
+            $table->time('hour')->nullable();
+            $table->text('comment')->nullable();
+            $table->boolean('successful')->default(false);
             $table->unsignedInteger('created_by');
             $table->timestamps();
 
@@ -32,7 +32,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->foreign('insulin_id')->references('id')->on('insulins')
+            $table->foreign('insulin_log_id')->references('id')->on('insulin_logs')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 

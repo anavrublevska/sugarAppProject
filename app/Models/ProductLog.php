@@ -18,9 +18,9 @@ class ProductLog extends BaseModel
         return $this->belongsTo(Product::class);
     }
 
-    public function insulin(): BelongsTo
+    public function insulinLog(): BelongsTo
     {
-        return $this->belongsTo(Insulin::class);
+        return $this->belongsTo(InsulinLog::class);
     }
 
     public function sugarBefore(): BelongsTo

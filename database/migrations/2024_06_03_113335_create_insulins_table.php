@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('insulins', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 512);
+            $table->string('name', 255);
             $table->unsignedInteger('created_by');
             $table->timestamps();
 

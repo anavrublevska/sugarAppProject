@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->float('level');
             $table->date('date');
-            $table->time('hour');
+            $table->time('hour')->nullable();
             $table->unsignedInteger('created_by');
             $table->timestamps();
 
