@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('insulins', InsulinController::class);
+    Route::resource('insulins', InsulinController::class)->except(['show']);
     Route::resource('products', ProductController::class);
     Route::resource('product-logs', ProductLogController::class);
     Route::resource('fantom', FantomController::class);
