@@ -16,7 +16,9 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name'        => env('APP_NAME', 'Laravel'),
+    'date_format' => 'd.m.Y',
+    'hour_format' => 'H:i',
 
     /*
     |--------------------------------------------------------------------------
