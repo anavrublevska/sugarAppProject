@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InsulinRequest;
 use App\Models\Insulin;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -27,7 +27,7 @@ class InsulinController extends Controller
             ->with('insulin', $insulin);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(InsulinRequest $request): RedirectResponse
     {
         $insulin = new Insulin($request->all());
         $insulin->creator()->associate(Auth::user());
@@ -42,7 +42,7 @@ class InsulinController extends Controller
 
     }
 
-    public function update(Request $request, Insulin $insulin): RedirectResponse
+    public function update(InsulinRequest $request, Insulin $insulin): RedirectResponse
     {
         $insulin->update($request->all());
 
