@@ -9,12 +9,12 @@ class NutritionalValueService
     public function storeOrUpdateNutritionalValue(array $data, NutritionalValue $nutritionalValue = null): NutritionalValue
     {
         if (! $nutritionalValue) {
-            $newNutritionalValue = new NutritionalValue(['carbohydrates' => $data['carbohydrates'], 'proteins' => $data['proteins'], 'fats' => $data['fats']]);
-            $newNutritionalValue->save();
+            $nutritionalValue = new NutritionalValue(['carbohydrates' => $data['carbohydrates'], 'proteins' => $data['proteins'], 'fats' => $data['fats']]);
+            $nutritionalValue->save();
         } else {
-            $newNutritionalValue = $nutritionalValue->update($data);
+           $nutritionalValue->update($data);
         }
 
-        return $newNutritionalValue;
+        return $nutritionalValue;
     }
 }
