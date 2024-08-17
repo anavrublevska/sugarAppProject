@@ -6,6 +6,7 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -13,12 +14,38 @@ class ProductController extends Controller
 {
     public function __construct(private ProductService $productService)
     {
-        $this->authorizeResource(Product::class);
+//        $this->authorizeResource(Product::class);
     }
     public function index(): View
     {
+        $actionIcons = [
+            "icon:calendar-days | color:green | click:redirect('/product/{id}/history') | tip:Zobacz historię produktu",
+            "icon:pencil | click:redirect('/products/{id}/edit') | tip:Edycja",
+            "icon:trash | color:red | click:deleteProduct('{id}', '{name}') | tip:Usuń",
+        ];
+        $columnAliases = [
+            'name' => 'Nazwa',
+            'carbohydrates' => 'Węglowodany',
+            'proteins' => 'Białko',
+            'fats' => 'Tłuszcz'
+        ];
+
+        $productsArray = [];
+
+         Product::byCreator(Auth::user())->get()->map(function (Product $product) use (&$productsArray) {
+            return $productsArray[] = [
+                'id'            => $product->id,
+                'name'          => $product->name,
+                'carbohydrates' => $product->nutritionalValue->carbohydrates,
+                'proteins'      => $product->nutritionalValue->proteins,
+                'fats'          => $product->nutritionalValue->fats
+            ];
+        });
+
         return view('system.product.index')
-            ->with('products', Product::byCreator(Auth::user())->get());
+            ->with('products', $productsArray)
+            ->with('actionIcons', $actionIcons)
+            ->with('columnAliases', $columnAliases);
     }
 
     public function create(): View
@@ -56,9 +83,13 @@ class ProductController extends Controller
         return redirect(route('products.index'));
     }
 
-    public function delete(Product $product): RedirectResponse
+    public function destroy(Product $product, Request $request)
     {
-        $product->delete();
+        if ($product->delete()) {
+            if ($request->ajax()) {
+                return ['success' => true];
+            }
+        }
 
         return redirect(route('products.index'));
     }

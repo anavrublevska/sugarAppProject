@@ -13,23 +13,30 @@
             <div class="text-center mb-6 mt-4">
                 <i class="fa-5x fa-solid fa-utensils text-gray-500"></i>
             </div>
-            <form method="{{ $product ? 'PUT' : 'POST' }}" action="{{ $product ? route('products.update', $product) : route('products.store') }}">
+            <form method="POST" action="{{ $product ? route('products.update', $product) : route('products.store') }}">
                 @csrf
+                @if ($product) {{ @method_field('PUT') }} @endif
                 <div>
                     <div class="mt-4">
                         <x-bladewind::input
                             label="Nazwa"
                             name="name"
                             required="true"
+                            value="{{ $product ? $product->name : null }}"
                             class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"/>
                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         <p class="text-center">100g produktu zawiera:</p>
-                    @include('system.nutritional_value.form')
+                    @include('system.nutritional_value.form', [
+                    'carbohydrates' => $product ? $product->nutritionalValue->carbohydrates : null,
+                    'proteins' => $product ? $product->nutritionalValue->proteins : null,
+                    'fats' => $product ? $product->nutritionalValue->fats : null
+                    ])
                 </div>
                 <div class="flex items-center justify-end mt-4">
                     <x-primary-button class="ms-4">
                         {{ __('Zapisz') }}
                     </x-primary-button>
+                </div>
                 </div>
             </form>
         </div>

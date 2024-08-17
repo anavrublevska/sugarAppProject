@@ -7,6 +7,7 @@ use App\Models\Insulin;
 use App\Models\Product;
 use App\Models\ProductLog;
 use App\Services\ProductLogService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,6 +46,22 @@ class ProductLogController extends Controller
             ->with('productLog', $productLog)
             ->with('insulins', empty($insulins) ? [['id' => '', 'name' => '']] : $insulins)
             ->with('products', empty($products) ? [['id' => '', 'name' => '']] : $products);
+    }
+
+    public function calculateNutritionValue(Request $request): JsonResponse
+    {
+        $product = Product::find($request->input('productId'));
+        $grams = (int) $request->input('grams');
+
+        return response()->json([
+            'carbohydrates' => (int) ($product->nutritionalValue->carbohydrates * $grams) / 100,
+            'proteins' => (int) ($product->nutritionalValue->proteins * $grams) / 100,
+            'fats' => (int) ($product->nutritionalValue->fats * $grams) / 100,
+        ]);
+    }
+    public function productHistory(Product $product)
+    {
+        return 'a';
     }
 
     public function store(Request $request): RedirectResponse

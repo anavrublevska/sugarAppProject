@@ -1,33 +1,71 @@
 @extends('layouts.app')
 
-@section('title', 'Moje insuliny')
-@section('header', 'Moje insuliny')
+@push('scripts')
+    <script>
+        deleteInsulin = (id, name) => {
+            showModal('delete-insulin');
+            domEl('.bw-delete-insulin .title').innerText = `${name}`;
+            domEl('.bw-delete-insulin').id = `${id}`;
+        }
+
+        notify = (title, message, type, dismiss_in) => {
+            showNotification(title, message, type, dismiss_in)
+        };
+
+        deleteInsulinAjax = () => {
+            let id =  domEl('.bw-delete-insulin').getAttribute('id');
+            $.ajax({
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: `/insulins/${id}`,
+                success: function(response) {
+                    notify('Powodzenie', 'Pomyślnie usunięto element.', 'success', 2);
+                    $(`tr[data-id="${id}"]`).remove();
+                },
+                error: function(xhr, status, error) {
+                    notify('Błąd', 'Wystąpił błąd przy usuwaniu.', 'error', 2);
+                }
+            });
+        }
+
+        redirect = (url) => {
+            window.open(url);
+        }
+    </script>
+@endpush
+
+@section('title', 'Moja insulina')
+@section('header', 'Moja insulina')
 @section('addButton')
-    <a href="{{ route('insulins.create') }}" class="btn btn-outline-info"><i class="fa fa-plus"></i> Dodaj</a>
+    <x-bladewind::button tag="a" href="{{ route('insulins.create') }}">Dodaj</x-bladewind::button>
 @endsection
 
 @section('content')
-    <ul>
-        @forelse ($insulins as $insulin)
-            <div class="py-12">
-                <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-yellow-100 overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-6 text-gray-900">
-                            <i class="fas fa-syringe text-gray-500"></i>  {{ $insulin->name }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @empty
-            <div class="py-12">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-6 text-gray-900">
-                            {{ __("Nie ma dostępnych insulin.") }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforelse
-    </ul>
+
+    <div style="width: 80%; margin-left:10%;" class="mt-6">
+        <x-bladewind.table
+            searchable="true"
+            :data="$insulins"
+            search_placeholder="Wpisz nazwę, żeby wyszukać..."
+            :action_icons="$actionIcons"
+            :column_aliases="$columnAliases"
+            no_data_message="Nie dodałeś jeszcze żadnej insuliny."
+            exclude_columns="id"
+            actions_title="Akcje">
+        </x-bladewind.table>
+        <x-bladewind.modal
+            name="delete-insulin"
+            type="error" title="Potwierdzenie"
+            cancel_button_label="Anuluj"
+            ok_button_label="Tak"
+            ok_button_action="deleteInsulinAjax()"
+            cancel_button_action="close"
+            blur_size="small">
+            Czy na pewno chcesz usunąć insulinę <b class="title"></b>?
+            Tej akcji nie można cofnąć.
+        </x-bladewind.modal>
+        <x-bladewind::notification />
+    </div>
 @endsection

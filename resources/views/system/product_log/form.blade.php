@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 @push('styles')
     <style>
         .box {
@@ -16,7 +18,31 @@
 
 @endpush
 
-@extends('layouts.app')
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('input[name="grams"]').addEventListener('input', function() {
+                let grams = this.value;
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: '/calculate-nutritional-value',
+                    method: 'POST',
+                    data: {
+                        productId: $('input[name="product_id"]').val(),
+                        grams: grams
+                    },
+                    success: function(response) {
+                        $('input[name="carbohydrates"]').val(response.carbohydrates);
+                        $('input[name="proteins"]').val(response.proteins);
+                        $('input[name="fats"]').val(response.fats);
+                    },
+                });
+            });
+        });
+    </script>
+@endpush
 
 @section('title', 'Dodawanie wpisu do historii')
 @section('header', 'Dodawanie wpisu do historii')
@@ -26,9 +52,6 @@
 
 @section('content')
     <body class="font-sans text-gray-900 antialiased">
-    {{--    <div class="min-h-screen flex flex-row sm:pt-10 bg-gray-100 pb-40"--}}
-{{--    <div class="sm:pt-10 bg-gray-100 pb-40 box">--}}
-        {{--    <div class="min-h-screen flex flex-col items-center sm:pt-10 bg-gray-100 pb-40">--}}
         <form method="{{ $productLog ? 'PUT' : 'POST' }}"
               action="{{ $productLog ? route('product-logs.update', $productLog) : route('product-logs.store') }}">
             @csrf
@@ -126,7 +149,11 @@
                             required="true"
                             class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"/>
                     </div>
-                    @include('system.nutritional_value.form')
+                    @include('system.nutritional_value.form', [
+                    'carbohydrates' => $productLog ? $productLog->nutritionalValue->carbohydrates : null,
+                    'proteins' => $productLog ? $productLog->nutritionalValue->proteins : null,
+                    'fats' => $productLog ? $productLog->nutritionalValue->fats : null
+                    ])
                     <x-bladewind::textarea label="Komentarze" name="comment"/>
                     <div class="flex items-center justify-end mt-4">
                         <x-primary-button class="ms-4">
@@ -137,6 +164,5 @@
             </div>
             </div>
         </form>
-{{--    </div>--}}
     </body>
 @endsection

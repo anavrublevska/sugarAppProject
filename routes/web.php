@@ -31,8 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('insulins', InsulinController::class)->except(['show']);
-    Route::resource('products', ProductController::class);
-    Route::resource('product-logs', ProductLogController::class);
+    Route::resource('products', ProductController::class)->except(['show']);
+    Route::get('product/{product}/history', [ProductLogController::class, 'productHistory'])->name('product.history');
+    Route::post('calculate-nutritional-value', [ProductLogController::class, 'calculateNutritionValue'])->name('product-log.calculate-nutrition-value');
+    Route::resource('product-logs', ProductLogController::class)->except(['show']);
     Route::resource('fantom', FantomController::class);
 });
 

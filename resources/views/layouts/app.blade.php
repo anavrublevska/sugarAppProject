@@ -16,6 +16,7 @@
         <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
         <script src="https://kit.fontawesome.com/e59b833e11.js" crossorigin="anonymous"></script>
         <script src="{{ asset('vendor/bladewind/js/helpers.js') }}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -45,9 +46,9 @@
             <main>
                 @yield('content')
             </main>
-            <footer>
-                <p>© SugarApp</p>
-            </footer>
+{{--            <div class="footer pt-2 pb-2 text-gray-500" style="position: absolute; bottom: 0; left:0; width: 100%; background-color: lightgrey; text-align: center;">--}}
+{{--                <p>SugarApp © Anastazja Vrublevska, 2024</p>--}}
+{{--            </div>--}}
         </div>
     </body>
 </html>
