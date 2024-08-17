@@ -23,7 +23,10 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:3', 'max:512']
+            'name'          => ['required', 'string', 'min:3', 'max:512'],
+            'carbohydrates' => ['numeric', 'nullable'],
+            'proteins'      => ['numeric', 'nullable'],
+            'fats'          => ['numeric', 'nullable'],
         ];
     }
 }

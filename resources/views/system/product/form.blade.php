@@ -16,9 +16,15 @@
             <form method="{{ $product ? 'PUT' : 'POST' }}" action="{{ $product ? route('products.update', $product) : route('products.store') }}">
                 @csrf
                 <div>
-                    <x-input-label for="name" :value="__('Nazwa')" />
-                    <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" placeholder="Kasza gryczana z sałatką" :value="old('name')" required autofocus autocomplete="name" />
+                    <div class="mt-4">
+                        <x-bladewind::input
+                            label="Nazwa"
+                            name="name"
+                            required="true"
+                            class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"/>
                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                        <p class="text-center">100g produktu zawiera:</p>
+                    @include('system.nutritional_value.form')
                 </div>
                 <div class="flex items-center justify-end mt-4">
                     <x-primary-button class="ms-4">

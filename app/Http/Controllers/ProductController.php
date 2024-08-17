@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ProductController extends Controller
 {
+    public function __construct(private ProductService $productService)
+    {
+        $this->authorizeResource(Product::class);
+    }
     public function index(): View
     {
         return view('system.product.index')
@@ -29,9 +34,7 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request): RedirectResponse
     {
-        $product = new Product($request->all());
-        $product->creator()->associate(Auth::user());
-        $product->save();
+        $this->productService->storeProduct($request->all(), Auth::user());
 
         return redirect(route('products.index'));
     }
@@ -48,7 +51,7 @@ class ProductController extends Controller
 
     public function update(ProductRequest $request, Product $product): RedirectResponse
     {
-        $product->update($request->all());
+        $this->productService->updateProduct($request->all(), $product);
 
         return redirect(route('products.index'));
     }

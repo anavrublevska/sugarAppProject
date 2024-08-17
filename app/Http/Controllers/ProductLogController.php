@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\ProductLog;
 use App\Services\ProductLogService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -15,13 +16,13 @@ class ProductLogController extends Controller
 {
     public function __construct(private ProductLogService $productLogService)
     {
-//        $this->authorizeResource(ProductLog::class);
+        $this->authorizeResource(ProductLog::class);
     }
 
     public function index(): View
     {
         return view('system.product_log.index')
-            ->with('productLogs', ProductLog::byCreator(Auth::user())->sortByDesc('created_at')->get());
+            ->with('productLogs', ProductLog::byCreator(Auth::user())->get()->sortByDesc('created_at'));
     }
 
     public function create(): View
@@ -42,11 +43,11 @@ class ProductLogController extends Controller
 
         return view('system.product_log.form')
             ->with('productLog', $productLog)
-            ->with('insulins', $insulins)
-            ->with('products', $products);
+            ->with('insulins', empty($insulins) ? [['id' => '', 'name' => '']] : $insulins)
+            ->with('products', empty($products) ? [['id' => '', 'name' => '']] : $products);
     }
 
-    public function store(ProductLogRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $this->productLogService->storeProductLog($request->all(), Auth::user());
 
@@ -67,15 +68,15 @@ class ProductLogController extends Controller
 
     public function update(ProductLogRequest $request, ProductLog $productLog): RedirectResponse
     {
-        $productLog->update($request->all());
+        $this->productLogService->updateProductLog($request->all(), $productLog);
 
-        return redirect(route('products.index'));
+        return redirect(route('product-logs.index'));
     }
 
     public function delete(ProductLog $productLog): RedirectResponse
     {
         $productLog->delete();
 
-        return redirect(route('products.index'));
+        return redirect(route('product-logs.index'));
     }
 }
