@@ -4,6 +4,7 @@
         label="Węglowodany (g)"
         name="carbohydrates"
         with_dots="true"
+        required="true"
         value="{{ $carbohydrates ?? null }}"
         class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"/>
 </div>

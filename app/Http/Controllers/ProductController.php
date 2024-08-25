@@ -66,11 +66,6 @@ class ProductController extends Controller
         return redirect(route('products.index'));
     }
 
-    public function show()
-    {
-
-    }
-
     public function edit(Product $product): View
     {
         return $this->form($product);
