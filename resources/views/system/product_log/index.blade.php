@@ -4,7 +4,7 @@
     <script>
         deleteProductLog = (id) => {
             showModal('delete-product-log');
-            domEl('.bw-delete-product').id = `${id}`;
+            domEl('.bw-delete-product-log').id = `${id}`;
         }
 
         notify = (title, message, type, dismiss_in) => {
@@ -12,7 +12,7 @@
         };
 
         deleteProductLogAjax = () => {
-            let id =  domEl('.bw-delete-product').getAttribute('id');
+            let id =  domEl('.bw-delete-product-log').getAttribute('id');
             $.ajax({
                 method: 'DELETE',
                 headers: {

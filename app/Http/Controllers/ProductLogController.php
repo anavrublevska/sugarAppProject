@@ -17,14 +17,14 @@ class ProductLogController extends Controller
 {
     public function __construct(private ProductLogService $productLogService)
     {
-        $this->authorizeResource(ProductLog::class);
+//        $this->authorizeResource(ProductLog::class);
     }
 
     public function index(): View
     {
         $productLogsArray = [];
 
-        ProductLog::byCreator(Auth::user())->get()->map(function (ProductLog $productLog) use (&$productLogsArray) {
+        ProductLog::byCreator(Auth::user())->get()->sortByDesc('date')->map(function (ProductLog $productLog) use (&$productLogsArray) {
             return $productLogsArray[] = [
                 'id'            => $productLog->id,
                 'name' => $productLog->product->name,
@@ -110,7 +110,7 @@ class ProductLogController extends Controller
     {
         $productLogsArray = [];
 
-        ProductLog::byCreator(Auth::user())->where('product_id', $product->id)->get()->sortByDesc('created_at')->map(function (ProductLog $productLog) use (&$productLogsArray) {
+        ProductLog::byCreator(Auth::user())->where('product_id', $product->id)->get()->sortByDesc('date')->map(function (ProductLog $productLog) use (&$productLogsArray) {
             return $productLogsArray[] = [
                 'id'            => $productLog->id,
                 'name' => $productLog->product->name,
@@ -152,9 +152,13 @@ class ProductLogController extends Controller
         return redirect(route('product-logs.index'));
     }
 
-    public function delete(ProductLog $productLog): RedirectResponse
+    public function destroy(ProductLog $productLog, Request $request)
     {
-        $productLog->delete();
+        if ($productLog->delete()) {
+            if ($request->ajax()) {
+                return ['success' => true];
+            }
+        }
 
         return redirect(route('product-logs.index'));
     }
