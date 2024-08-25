@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('products', ProductController::class)->except(['show']);
     Route::get('product/{product}/history', [ProductLogController::class, 'productHistory'])->name('product.history');
     Route::post('calculate-nutritional-value', [ProductLogController::class, 'calculateNutritionValue'])->name('product-log.calculate-nutrition-value');
-    Route::resource('product-logs', ProductLogController::class)->except(['show']);
+    Route::resource('product-logs', ProductLogController::class);
     Route::resource('fantom', FantomController::class);
 });
 

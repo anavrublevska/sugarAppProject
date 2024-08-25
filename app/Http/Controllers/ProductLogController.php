@@ -22,8 +22,45 @@ class ProductLogController extends Controller
 
     public function index(): View
     {
+        $productLogsArray = [];
+
+        ProductLog::byCreator(Auth::user())->get()->map(function (ProductLog $productLog) use (&$productLogsArray) {
+            return $productLogsArray[] = [
+                'id'            => $productLog->id,
+                'name' => $productLog->product->name,
+                'grams' => $productLog->grams,
+                'ww' => round($productLog->nutritionalValue->carbohydrates / 10, 1),
+                'date' => $productLog->date->format(config('app.date_format')),
+                'insulin_quantity' => $productLog->insulinLog->quantity,
+                'sugar_before' => $productLog->sugarBefore->level,
+                'sugar_after' => $productLog->sugarAfter->level
+            ];
+        });
+
+        return $this->indexGeneral($productLogsArray);
+    }
+
+    public function indexGeneral(array $productLogsArray)
+    {
+        $actionIcons = [
+            "icon:arrow-right-circle | color:green | click:redirect('/product-logs/{id}') | tip:Podgląd",
+            "icon:pencil | click:redirect('/product-logs/{id}/edit') | tip:Edycja",
+            "icon:trash | color:red | click:deleteProductLog('{id}') | tip:Usuń",
+        ];
+        $columnAliases = [
+            'name' => 'Produkt',
+            'grams' => 'Gramy',
+            'ww' => 'WW',
+            'date' => 'Data',
+            'insulin_quantity' => 'Insulina (j.)',
+            'sugar_before' => 'Cukier przed',
+            'sugar_after' => 'Cukier po'
+        ];
+
         return view('system.product_log.index')
-            ->with('productLogs', ProductLog::byCreator(Auth::user())->get()->sortByDesc('created_at'));
+            ->with('productLogs', $productLogsArray)
+            ->with('actionIcons', $actionIcons)
+            ->with('columnAliases', $columnAliases);
     }
 
     public function create(): View
@@ -34,18 +71,28 @@ class ProductLogController extends Controller
 
     private function form(ProductLog $productLog = null): View
     {
-        $insulins = Insulin::byCreator(Auth::user())->get()->mapWithKeys(function ($item) {
-            return [['id' => $item['id'], 'name' => $item['name']]];
-        })->toArray();
+        $insulinsArray = [];
+        Insulin::byCreator(Auth::user())->get()->map(function (Insulin $insulin) use (&$insulinsArray) {
+            return $insulinsArray[] = [
+                'id' => $insulin->id,
+                'name' => $insulin->name,
+            ];
+        });
 
-        $products =  Product::byCreator(Auth::user())->get()->mapWithKeys(function ($item) {
-            return [['id' => $item['id'], 'name' => $item['name']]];
-        })->toArray();
+        $productsArray = [];
+        Product::all()->filter(function (Product $product) {
+            return $product->created_by === Auth::user()->id || $product->created_by === null;
+        })->map(function (Product $product) use (&$productsArray) {
+            return $productsArray[] = [
+                'id'            => $product->id,
+                'name' => $product->name,
+            ];
+        });
 
         return view('system.product_log.form')
             ->with('productLog', $productLog)
-            ->with('insulins', empty($insulins) ? [['id' => '', 'name' => '']] : $insulins)
-            ->with('products', empty($products) ? [['id' => '', 'name' => '']] : $products);
+            ->with('insulins', empty($insulinsArray) ? [['id' => '', 'name' => '']] : $insulinsArray)
+            ->with('products', empty($productsArray) ? [['id' => '', 'name' => '']] : $productsArray);
     }
 
     public function calculateNutritionValue(Request $request): JsonResponse
@@ -61,7 +108,22 @@ class ProductLogController extends Controller
     }
     public function productHistory(Product $product)
     {
-        return 'a';
+        $productLogsArray = [];
+
+        ProductLog::byCreator(Auth::user())->where('product_id', $product->id)->get()->sortByDesc('created_at')->map(function (ProductLog $productLog) use (&$productLogsArray) {
+            return $productLogsArray[] = [
+                'id'            => $productLog->id,
+                'name' => $productLog->product->name,
+                'grams' => $productLog->grams,
+                'ww' => round($productLog->nutritionalValue->carbohydrates / 10, 1),
+                'date' => $productLog->date->format(config('app.date_format')),
+                'insulin_quantity' => $productLog->insulinLog->quantity,
+                'sugar_before' => $productLog->sugarBefore->level,
+                'sugar_after' => $productLog->sugarAfter->level
+            ];
+        });
+
+        return $this->indexGeneral($productLogsArray);
     }
 
     public function store(Request $request): RedirectResponse
