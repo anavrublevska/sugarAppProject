@@ -27,9 +27,9 @@
                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         <p class="text-center">100g produktu zawiera:</p>
                     @include('system.nutritional_value.form', [
-                    'carbohydrates' => $product ? $product->nutritionalValue->carbohydrates : null,
-                    'proteins' => $product ? $product->nutritionalValue->proteins : null,
-                    'fats' => $product ? $product->nutritionalValue->fats : null
+                    'carbohydrates' => $product ? $product->carbohydrates : null,
+                    'proteins' => $product ? $product->proteins : null,
+                    'fats' => $product ? $product->fats : null
                     ])
                 </div>
                 <div class="flex items-center justify-end mt-4">

@@ -17,8 +17,10 @@ return new class extends Migration
             $table->unsignedInteger('insulin_log_id');
             $table->unsignedInteger('sugar_before_id');
             $table->unsignedInteger('sugar_after_id');
-            $table->unsignedInteger('nutritional_value_id');
             $table->unsignedInteger('grams');
+            $table->float('carbohydrates')->nullable();
+            $table->float('proteins')->nullable();
+            $table->float('fats')->nullable();
             $table->date('date');
             $table->time('hour')->nullable();
             $table->text('comment')->nullable();
@@ -39,10 +41,6 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->foreign('sugar_after_id')->references('id')->on('sugar_logs')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreign('nutritional_value_id')->references('id')->on('nutritional_values')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 

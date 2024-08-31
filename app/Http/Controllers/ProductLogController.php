@@ -29,7 +29,7 @@ class ProductLogController extends Controller
                 'id'            => $productLog->id,
                 'name' => $productLog->product->name,
                 'grams' => $productLog->grams,
-                'ww' => round($productLog->nutritionalValue->carbohydrates / 10, 1),
+                'ww' => round($productLog->carbohydrates / 10, 1),
                 'date' => $productLog->date->format(config('app.date_format')),
                 'insulin_quantity' => $productLog->insulinLog->quantity,
                 'sugar_before' => $productLog->sugarBefore->level,
@@ -101,9 +101,9 @@ class ProductLogController extends Controller
         $grams = (int) $request->input('grams');
 
         return response()->json([
-            'carbohydrates' => (int) ($product->nutritionalValue->carbohydrates * $grams) / 100,
-            'proteins' => (int) ($product->nutritionalValue->proteins * $grams) / 100,
-            'fats' => (int) ($product->nutritionalValue->fats * $grams) / 100,
+            'carbohydrates' => (int) ($product->carbohydrates * $grams) / 100,
+            'proteins' => (int) ($product->proteins * $grams) / 100,
+            'fats' => (int) ($product->fats * $grams) / 100,
         ]);
     }
     public function productHistory(Product $product)
@@ -112,14 +112,14 @@ class ProductLogController extends Controller
 
         ProductLog::byCreator(Auth::user())->where('product_id', $product->id)->get()->sortByDesc('date')->map(function (ProductLog $productLog) use (&$productLogsArray) {
             return $productLogsArray[] = [
-                'id'            => $productLog->id,
-                'name' => $productLog->product->name,
-                'grams' => $productLog->grams,
-                'ww' => round($productLog->nutritionalValue->carbohydrates / 10, 1),
-                'date' => $productLog->date->format(config('app.date_format')),
+                'id'               => $productLog->id,
+                'name'  => $productLog->product->name,
+                'grams'            => $productLog->grams,
+                'ww'               => round($productLog->carbohydrates / 10, 1),
+                'date'             => $productLog->date->format(config('app.date_format')),
                 'insulin_quantity' => $productLog->insulinLog->quantity,
-                'sugar_before' => $productLog->sugarBefore->level,
-                'sugar_after' => $productLog->sugarAfter->level
+                'sugar_before'     => $productLog->sugarBefore->level,
+                'sugar_after'      => $productLog->sugarAfter->level
             ];
         });
 

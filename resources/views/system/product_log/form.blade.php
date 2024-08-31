@@ -150,9 +150,9 @@
                             class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"/>
                     </div>
                     @include('system.nutritional_value.form', [
-                    'carbohydrates' => $productLog ? $productLog->nutritionalValue->carbohydrates : null,
-                    'proteins' => $productLog ? $productLog->nutritionalValue->proteins : null,
-                    'fats' => $productLog ? $productLog->nutritionalValue->fats : null
+                    'carbohydrates' => $productLog ? $productLog->carbohydrates : null,
+                    'proteins' => $productLog ? $productLog->proteins : null,
+                    'fats' => $productLog ? $productLog->fats : null
                     ])
                     <x-bladewind::textarea label="Komentarze" name="comment"/>
                     <div class="flex items-center justify-end mt-4">

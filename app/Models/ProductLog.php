@@ -9,18 +9,13 @@ class ProductLog extends BaseModel
 {
     use CreatorTrait;
 
-    protected $fillable = ['grams', 'date', 'hour', 'successful', 'comment'];
+    protected $fillable = ['grams', 'carbohydrates', 'proteins', 'fats','date', 'hour', 'successful', 'comment'];
 
-    protected $casts = ['grams' => 'integer', 'date' => 'date', 'hour' => 'timestamp', 'successful' => 'boolean'];
+    protected $casts = ['grams' => 'integer', 'carbohydrates' => 'float', 'proteins' => 'float', 'fats' => 'float', 'date' => 'date', 'hour' => 'timestamp', 'successful' => 'boolean'];
 
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
-    }
-
-    public function nutritionalValue(): BelongsTo
-    {
-        return $this->belongsTo(NutritionalValue::class);
     }
 
     public function insulinLog(): BelongsTo

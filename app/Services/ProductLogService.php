@@ -36,10 +36,11 @@ class ProductLogService
         $sugarAfterLog->creator()->associate($user);
         $sugarAfterLog->save();
 
-        $newNutritionalValue = resolve(NutritionalValueService::class)->storeOrUpdateNutritionalValue(['carbohydrates' => $data['carbohydrates'], 'proteins' => $data['proteins'], 'fats' => $data['fats']]);
-
         $productLog = new ProductLog([
             'grams'         => $data['grams'],
+            'carbohydrates' => $data['carbohydrates'],
+            'proteins'      => $data['proteins'],
+            'fats'          => $data['fats'],
             'date'          => $data['product_log_date'],
             'hour'          => $data['product_log_hour'],
             'comment'       => $data['comment']
@@ -48,7 +49,6 @@ class ProductLogService
         $productLog->insulinLog()->associate($insulinLog);
         $productLog->sugarBefore()->associate($sugarBeforeLog);
         $productLog->sugarAfter()->associate($sugarAfterLog);
-        $productLog->nutritionalValue()->associate($newNutritionalValue);
         $productLog->creator()->associate($user);
         $productLog->save();
     }
@@ -72,16 +72,11 @@ class ProductLogService
             'hour'  => $data['sugar_after_hour'],
         ]);
 
-        resolve(NutritionalValueService::class)->storeOrUpdateNutritionalValue([
-            'carbohydrates' => $data['carbohydrates'],
-            'proteins'      => $data['proteins'],
-            'fats'          => $data['fats']
-            ],
-            $productLog->nutritionalValue
-        );
-
         $productLog->update([
             'grams'         => $data['grams'],
+            'carbohydrates' => $data['carbohydrates'],
+            'proteins'      => $data['proteins'],
+            'fats'          => $data['fats'],
             'date'          => $data['product_log_date'],
             'hour'          => $data['product_log_hour'],
             'comment'       => $data['comment']

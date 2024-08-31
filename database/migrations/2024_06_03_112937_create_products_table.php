@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('nutritional_value_id');
             $table->string('name', 512);
+            $table->float('carbohydrates')->nullable();
+            $table->float('proteins')->nullable();
+            $table->float('fats')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->timestamps();
-
-            $table->foreign('nutritional_value_id')->references('id')->on('nutritional_values')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
 
             $table->foreign('created_by')
                 ->references('id')

@@ -9,11 +9,8 @@ class Product extends BaseModel
 {
     use CreatorTrait;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'carbohydrates', 'proteins', 'fats'];
 
-    public function nutritionalValue(): BelongsTo
-    {
-        return $this->belongsTo(NutritionalValue::class);
-    }
+    protected $casts = ['carbohydrates' => 'float', 'proteins' => 'float', 'fats' => 'float'];
 
 }

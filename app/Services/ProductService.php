@@ -10,16 +10,23 @@ class ProductService
 {
     public function storeProduct(array $data, User $user): void
     {
-        $nutritionalValue = resolve(NutritionalValueService::class)->storeOrUpdateNutritionalValue($data);
-        $product = new Product(['name' => $data['name']]);
-        $product->nutritionalValue()->associate($nutritionalValue);
+        $product = new Product([
+            'name'          => $data['name'],
+            'carbohydrates' => $data['carbohydrates'],
+            'proteins'      => $data['proteins'],
+            'fats'          => $data['fats']
+        ]);
         $product->creator()->associate($user);
         $product->save();
     }
 
     public function updateProduct(array $data, Product $product): void
     {
-        resolve(NutritionalValueService::class)->storeOrUpdateNutritionalValue($data, $product->nutritionalValue);
-        $product->update(['name' => $data['name']]);
+        $product->update([
+            'name'          => $data['name'],
+            'carbohydrates' => $data['carbohydrates'],
+            'proteins'      => $data['proteins'],
+            'fats'          => $data['fats']
+        ]);
     }
 }

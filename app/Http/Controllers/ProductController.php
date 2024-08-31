@@ -36,9 +36,9 @@ class ProductController extends Controller
             return $productsArray[] = [
                 'id'            => $product->id,
                 'name'          => $product->name,
-                'carbohydrates' => $product->nutritionalValue->carbohydrates,
-                'proteins'      => $product->nutritionalValue->proteins,
-                'fats'          => $product->nutritionalValue->fats
+                'carbohydrates' => $product->carbohydrates,
+                'proteins'      => $product->proteins,
+                'fats'          => $product->fats
             ];
         });
 
