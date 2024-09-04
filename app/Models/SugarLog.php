@@ -10,6 +10,6 @@ class SugarLog extends BaseModel
 
     protected $fillable = ['level', 'date', 'hour'];
 
-    protected $casts = ['level' => 'float', 'date' => 'date', 'hour' => 'timestamp'];
+    protected $casts = ['level' => 'float', 'date' => 'date'];
 
 }

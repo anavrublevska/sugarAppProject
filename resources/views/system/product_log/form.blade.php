@@ -62,9 +62,8 @@
                             <i class="fa-5x fas fa-syringe text-gray-500"></i>
                         </div>
                         <h3 class="text-center">Insulina</h3>
-                        <input type="time" name="insulin_hour" min="00:00" max="23:59"
-                               class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"
-                               style="width:100%;"/>
+                        <input type="time" name="insulin_hour" min="00:00" max="23:59" class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"
+                               style="width:100%;" value="{{ $productLog ? $productLog->insulinLog->hour : null }}"/>
                         <div class="mt-4">
                             <x-bladewind::select
                                 name="insulin_id"
@@ -73,7 +72,7 @@
                                 label="Nazwa insuliny"
                                 label_key="name"
                                 value_key="id"
-                                selected-value="{{ $productLog->insulin ?? null }}">
+                                selected-value="{{ $productLog ? $productLog->insulinLog->insulin_id : null }}">
                             </x-bladewind::select>
                         </div>
                         <div class="mt-4">
@@ -82,7 +81,8 @@
                                 label="Liczba jednostek"
                                 name="quantity"
                                 required="true"
-                                class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"/>
+                                class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"
+                                value="{{ $productLog ? $productLog->insulinLog->quantity : null }}"/>
                         </div>
                     </div>
                     <div class="mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg me">
@@ -92,25 +92,27 @@
                         <h3 class="text-center">Poziomy cukru</h3>
                         <input type="time" name="sugar_before_hour" min="00:00" max="23:59"
                                class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"
-                               style="width:100%;"/>
+                               style="width:100%;" value="{{ $productLog ? $productLog->sugarBefore?->hour : null }}"/>
                         <div class="mt-4">
                             <x-bladewind::input
                                 numeric="true"
                                 label="Poziom cukru przed posiłkiem"
                                 name="sugar_before"
                                 required="true"
-                                class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"/>
+                                class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"
+                                value="{{ $productLog ? $productLog->sugarBefore?->level : null }}"/>
                         </div>
                         <input type="time" name="sugar_after_hour" min="00:00" max="23:59"
                                class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"
-                               style="width:100%;"/>
+                               style="width:100%;" value="{{ $productLog ? $productLog->sugarAfter?->hour : null }}"/>
                         <div class="mt-4">
                             <x-bladewind::input
                                 numeric="true"
                                 label="Poziom cukru po posiłku"
                                 name="sugar_after"
                                 required="true"
-                                class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"/>
+                                class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"
+                                value="{{ $productLog ? $productLog->sugarAfter?->level : null }}"/>
                         </div>
                     </div>
                 </div>
@@ -126,10 +128,11 @@
                             name="product_log_date"
                             required="true"
                             format="dd-mm-yyyy"
-                            class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"/>
+                            class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"
+                            default-date="{{ $productLog ? $productLog->date->format(config('app.date_format')) : null }}"/>
                     </div>
-                    <input type="time" name="product_log_hour" min="00:00" max="23:59"
-                           class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50" style="width:100%;"/>
+{{--                    @php dd($productLog->value);@endphp--}}
+                    <input type="time" name="product_log_hour" min="00:00" max="23:59" class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50" style="width:100%;" value="{{ $productLog->hour ?? null }}"/>
                     <div class="mt-4">
                         <x-bladewind::select
                             name="product_id"
@@ -138,7 +141,8 @@
                             label="Danie/produkt"
                             label_key="name"
                             value_key="id"
-                            searchable="true">
+                            searchable="true"
+                            selected-value="{{ $productLog ? $productLog->product->id : null }}">
                         </x-bladewind::select>
                     </div>
                     <div class="mt-4">
@@ -147,14 +151,16 @@
                             label="Gramy"
                             name="grams"
                             required="true"
-                            class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"/>
+                            class="rounded-md bg-white text-slate-600 border-2 border-slate-300/50"
+                            value="{{ $productLog->grams ?? null }}"
+                        />
                     </div>
                     @include('system.nutritional_value.form', [
                     'carbohydrates' => $productLog ? $productLog->carbohydrates : null,
                     'proteins' => $productLog ? $productLog->proteins : null,
                     'fats' => $productLog ? $productLog->fats : null
                     ])
-                    <x-bladewind::textarea label="Komentarze" name="comment"/>
+                    <x-bladewind::textarea label="Komentarze" name="comment" selected_value="{{ $productLog->comment ?? null }}"/>
                     <div class="flex items-center justify-end mt-4">
                         <x-primary-button class="ms-4">
                             {{ __('Zapisz') }}

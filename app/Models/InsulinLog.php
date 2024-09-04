@@ -11,7 +11,7 @@ class InsulinLog extends BaseModel
 
     protected $fillable = ['quantity', 'date', 'hour'];
 
-    protected $casts = ['quantity' => 'float', 'date' => 'date', 'hour' => 'timestamp'];
+    protected $casts = ['quantity' => 'float', 'date' => 'date'];
 
     public function insulin(): BelongsTo
     {

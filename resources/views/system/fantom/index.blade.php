@@ -64,6 +64,7 @@
         #fantom-container {
             position: relative;
             display: inline-block;
+            min-width: max-content;
         }
 
         #fantom {
