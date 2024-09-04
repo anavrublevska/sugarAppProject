@@ -17,7 +17,8 @@ return new class extends Migration
             $table->date('date');
             $table->integer('coord_x');
             $table->integer('coord_y');
-            $table->text('description');
+            $table->string('color', 16);
+            $table->text('description')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')

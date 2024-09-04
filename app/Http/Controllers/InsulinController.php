@@ -15,6 +15,7 @@ class InsulinController extends Controller
     {
        $this->authorizeResource(Insulin::class);
     }
+
     public function index(): View
     {
         $actionIcons = [
@@ -29,8 +30,8 @@ class InsulinController extends Controller
 
         Insulin::byCreator(Auth::user())->get()->map(function (Insulin $insulin) use (&$insulinArray) {
             return $insulinArray[] = [
-                'id'            => $insulin->id,
-                'name'          => $insulin->name,
+                'id'   => $insulin->id,
+                'name' => $insulin->name,
             ];
         });
 

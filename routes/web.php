@@ -36,7 +36,9 @@ Route::middleware('auth')->group(function () {
     Route::get('product/{product}/history', [ProductLogController::class, 'productHistory'])->name('product.history');
     Route::post('calculate-nutritional-value', [ProductLogController::class, 'calculateNutritionValue'])->name('product-log.calculate-nutrition-value');
     Route::resource('product-logs', ProductLogController::class);
-    Route::resource('fantom', FantomController::class);
+    Route::get('/fantom', [FantomController::class, 'index'])->name('fantom.index');
+    Route::post('/fantom/store', [FantomController::class, 'storePoints'])->name('fantom.store-points');
+    Route::get('/fantom-point/{fantomPoint}/delete', [FantomController::class, 'destroy'])->name('fantom-point.destroy');
 });
 
 require __DIR__.'/auth.php';
