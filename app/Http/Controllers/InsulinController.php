@@ -13,7 +13,7 @@ class InsulinController extends Controller
 {
     public function __construct()
     {
-//        $this->authorizeResource(Insulin::class);
+       $this->authorizeResource(Insulin::class);
     }
     public function index(): View
     {

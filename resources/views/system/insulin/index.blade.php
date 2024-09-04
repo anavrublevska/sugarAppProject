@@ -15,11 +15,11 @@
         deleteInsulinAjax = () => {
             let id =  domEl('.bw-delete-insulin').getAttribute('id');
             $.ajax({
-                method: 'DELETE',
+                method: 'get',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: `/insulins/${id}`,
+                url: `/insulin/${id}/delete`,
                 success: function(response) {
                     notify('Powodzenie', 'Pomyślnie usunięto element.', 'success', 2);
                     $(`tr[data-id="${id}"]`).remove();

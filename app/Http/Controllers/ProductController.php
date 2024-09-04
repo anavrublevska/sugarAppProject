@@ -14,7 +14,7 @@ class ProductController extends Controller
 {
     public function __construct(private ProductService $productService)
     {
-//        $this->authorizeResource(Product::class);
+        $this->authorizeResource(Product::class);
     }
     public function index(): View
     {

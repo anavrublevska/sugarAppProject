@@ -17,7 +17,7 @@ class ProductLogController extends Controller
 {
     public function __construct(private ProductLogService $productLogService)
     {
-//        $this->authorizeResource(ProductLog::class);
+        $this->authorizeResource(ProductLog::class);
     }
 
     public function index(): View
