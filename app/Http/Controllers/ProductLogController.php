@@ -6,6 +6,7 @@ use App\Http\Requests\ProductLogRequest;
 use App\Models\Insulin;
 use App\Models\Product;
 use App\Models\ProductLog;
+use App\Models\User;
 use App\Services\ProductLogService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -63,10 +64,13 @@ class ProductLogController extends Controller
             ->with('columnAliases', $columnAliases);
     }
 
-    public function create(): View
+    public function create()
     {
-        return $this->form();
+        if (User::find(Auth::user()->id)->insulins->isEmpty()) {
+            return redirect(route('insulins.create'));
+        }
 
+        return $this->form();
     }
 
     private function form(ProductLog $productLog = null): View
@@ -137,6 +141,13 @@ class ProductLogController extends Controller
     {
         return view('system.product_log.show')
             ->with('productLog', $productLog);
+    }
+
+    public function markSuccessful(ProductLog $productLog)
+    {
+        $productLog->update(['successful' => true]);
+
+        return redirect(route('product-logs.show', $productLog));
     }
 
     public function edit(ProductLog $productLog): View

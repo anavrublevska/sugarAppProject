@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'name'        => env('APP_NAME', 'Laravel'),
+    'name'        => env('APP_NAME', 'Dziennik posiłków'),
     'date_format' => 'd.m.Y',
     'hour_format' => 'H:i',
 
