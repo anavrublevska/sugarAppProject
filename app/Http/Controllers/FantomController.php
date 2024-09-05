@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FantomPointRequest;
 use App\Models\FantomPoint;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,7 +11,6 @@ class FantomController extends Controller
 {
     public function __construct()
     {
-//        $this->authorizeResource(FantomPoint::class);
     }
 
     public function index()
@@ -59,7 +57,6 @@ class FantomController extends Controller
 
     public function storePoints(Request $request): RedirectResponse
     {
-//        $this->authorize('store', FantomPoint::class);
         $pointsArray = json_decode($request->get('points_data'), true);
         foreach ($pointsArray as $coordinates) {
             $point = new FantomPoint([
