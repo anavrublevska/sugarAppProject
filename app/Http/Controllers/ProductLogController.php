@@ -18,7 +18,7 @@ class ProductLogController extends Controller
 {
     public function __construct(private ProductLogService $productLogService)
     {
-        $this->authorizeResource(ProductLog::class);
+//        $this->authorizeResource(ProductLog::class);
     }
 
     public function index(): View
@@ -44,8 +44,8 @@ class ProductLogController extends Controller
     public function indexGeneral(array $productLogsArray)
     {
         $actionIcons = [
-            "icon:arrow-right-circle | color:green | click:redirect('/product-logs/{id}') | tip:Podgląd",
-            "icon:pencil | click:redirect('/product-logs/{id}/edit') | tip:Edycja",
+            "icon:arrow-right-circle | color:green | click:showProductLog('{id}') | tip:Podgląd",
+            "icon:pencil | click:editProductLog('{id}') | tip:Edycja",
             "icon:trash | color:red | click:deleteProductLog('{id}') | tip:Usuń",
         ];
         $columnAliases = [
@@ -147,7 +147,7 @@ class ProductLogController extends Controller
     {
         $productLog->update(['successful' => true]);
 
-        return redirect(route('product-logs.show', $productLog));
+        return redirect(route('product-log.show', $productLog));
     }
 
     public function edit(ProductLog $productLog): View

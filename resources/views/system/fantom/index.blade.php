@@ -38,11 +38,11 @@
         deleteFantomPointAjax = () => {
             let id =  domEl('.bw-delete-fantom-point').getAttribute('id');
             $.ajax({
-                method: 'GET',
+                method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: `/fantom-point/${id}/delete`,
+                url: `{{ route('fantom-point.destroy', '') }}/${id}`,
                 success: function(response) {
                     notify('Powodzenie', 'Pomyślnie usunięto element.', 'success', 2);
                     $(`tr[data-id="${id}"]`).remove();

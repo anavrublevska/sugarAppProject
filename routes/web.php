@@ -30,16 +30,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/insulin/{insulin}/delete', [InsulinController::class, 'destroy'])->name('insulin.destroy');
-    Route::resource('insulins', InsulinController::class)->except(['show', 'destroy']);
-    Route::resource('products', ProductController::class)->except(['show']);
-    Route::get('product/{product}/history', [ProductLogController::class, 'productHistory'])->name('product.history');
+    Route::delete('/insulin/{insulin}', [InsulinController::class, 'destroy'])->name('insulin.destroy');
+    Route::get('/insulin-edit/{insulin}', [InsulinController::class, 'edit'])->name('insulin.edit');
+    Route::resource('insulins', InsulinController::class)->except(['show', 'destroy', 'edit']);
+    Route::get('/product-edit/{product}', [ProductController::class, 'edit'])->name('product.edit');
+    Route::resource('products', ProductController::class)->except(['show', 'edit']);
+    Route::get('product-history/{product}', [ProductLogController::class, 'productHistory'])->name('product.history');
     Route::post('calculate-nutritional-value', [ProductLogController::class, 'calculateNutritionValue'])->name('product-log.calculate-nutrition-value');
+    Route::resource('product-logs', ProductLogController::class)->except(['show', 'edit']);
+    Route::get('/product-log-edit/{productLog}', [ProductLogController::class, 'edit'])->name('product-log.edit');
+    Route::get('/product-logs/{productLog}', [ProductLogController::class, 'show'])->name('product-log.show');
     Route::get('product-log/{productLog}/mark-successful', [ProductLogController::class, 'markSuccessful'])->name('product-log.mark-successful');
-    Route::resource('product-logs', ProductLogController::class);
     Route::get('/fantom', [FantomController::class, 'index'])->name('fantom.index');
     Route::post('/fantom/store', [FantomController::class, 'storePoints'])->name('fantom.store-points');
-    Route::get('/fantom-point/{fantomPoint}/delete', [FantomController::class, 'destroy'])->name('fantom-point.destroy');
+    Route::delete('/fantom-point/{fantomPoint}', [FantomController::class, 'destroy'])->name('fantom-point.destroy');
 });
 
 require __DIR__.'/auth.php';

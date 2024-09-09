@@ -27,7 +27,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: '/calculate-nutritional-value',
+                    url: `{{ route('product-log.calculate-nutrition-value') }}`,
                     method: 'POST',
                     data: {
                         productId: $('input[name="product_id"]').val(),

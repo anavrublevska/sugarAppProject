@@ -8,6 +8,10 @@
             domEl('.bw-delete-insulin').id = `${id}`;
         }
 
+        editInsulin = (id) => {
+            window.open(`{{ route('insulin.edit', '') }}/${id}`);
+        }
+
         notify = (title, message, type, dismiss_in) => {
             showNotification(title, message, type, dismiss_in)
         };
@@ -15,11 +19,11 @@
         deleteInsulinAjax = () => {
             let id =  domEl('.bw-delete-insulin').getAttribute('id');
             $.ajax({
-                method: 'get',
+                method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: `/insulin/${id}/delete`,
+                url: `{{ route('insulin.destroy', '') }}/${id}`,
                 success: function(response) {
                     notify('Powodzenie', 'Pomyślnie usunięto element.', 'success', 2);
                     $(`tr[data-id="${id}"]`).remove();

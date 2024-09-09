@@ -19,8 +19,8 @@ class ProductController extends Controller
     public function index(): View
     {
         $actionIcons = [
-            "icon:calendar-days | color:green | click:redirect('/product/{id}/history') | tip:Zobacz historię produktu",
-            "icon:pencil | click:redirect('/products/{id}/edit') | tip:Edycja",
+            "icon:calendar-days | color:green | click:productHistory('{id}') | tip:Zobacz historię produktu",
+            "icon:pencil | click:editProduct('{id}') | tip:Edycja",
             "icon:trash | color:red | click:deleteProduct('{id}', '{name}') | tip:Usuń",
         ];
         $columnAliases = [

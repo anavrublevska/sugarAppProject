@@ -19,7 +19,7 @@ class InsulinController extends Controller
     public function index(): View
     {
         $actionIcons = [
-            "icon:pencil | click:redirect('/insulins/{id}/edit') | tip:Edycja",
+            "icon:pencil | click:editInsulin('{id}') | tip:Edycja",
             "icon:trash | color:red | click:deleteInsulin('{id}', '{name}') | tip:Usuń",
         ];
         $columnAliases = [

@@ -12,6 +12,14 @@
             showNotification(title, message, type, dismiss_in)
         };
 
+        editProduct = (id) => {
+            window.open(`{{ route('product.edit', '') }}/${id}`);
+        }
+
+        productHistory = (id) => {
+            window.open(`{{ route('product.history', '') }}/${id}`);
+        }
+
         deleteProductAjax = () => {
             let id =  domEl('.bw-delete-product').getAttribute('id');
             $.ajax({
@@ -19,7 +27,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: `/products/${id}`,
+                url: `{{ route('products.destroy', '') }}/${id}`,
                 success: function(response) {
                     notify('Powodzenie', 'Pomyślnie usunięto element.', 'success', 2);
                     $(`tr[data-id="${id}"]`).remove();

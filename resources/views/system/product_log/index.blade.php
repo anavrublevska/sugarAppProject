@@ -7,6 +7,14 @@
             domEl('.bw-delete-product-log').id = `${id}`;
         }
 
+        editProductLog = (id) => {
+            window.open(`{{ route('product-log.edit', '') }}/${id}`);
+        }
+
+        showProductLog = (id) => {
+            window.open(`{{ route('product-log.show', '') }}/${id}`);
+        }
+
         notify = (title, message, type, dismiss_in) => {
             showNotification(title, message, type, dismiss_in)
         };
@@ -18,7 +26,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: `/product-logs/${id}`,
+                url: `{{ route('product-logs.destroy', '') }}/${id}`,
                 success: function(response) {
                     notify('Powodzenie', 'Pomyślnie usunięto element.', 'success', 2);
                     $(`tr[data-id="${id}"]`).remove();
